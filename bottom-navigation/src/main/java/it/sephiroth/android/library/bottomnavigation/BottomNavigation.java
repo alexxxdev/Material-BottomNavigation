@@ -333,6 +333,15 @@ public class BottomNavigation extends FrameLayout implements OnItemClickListener
         }
     }
 
+    public void setSelectedItem(final int position, final boolean animate) {
+        if (null != itemsContainer) {
+            setSelectedItemInternalWithoutListener(
+                    itemsContainer, ((ViewGroup) itemsContainer).getChildAt(position), position, animate, false);
+        } else {
+            defaultSelectedIndex = position;
+        }
+    }
+
     @SuppressWarnings ("unused")
     public int getSelectedIndex() {
         if (null != itemsContainer) {
@@ -787,6 +796,46 @@ public class BottomNavigation extends FrameLayout implements OnItemClickListener
             if (null != listener) {
                 listener.onMenuItemReselect(null != item ? item.getId() : -1, index, fromUser);
             }
+        }
+    }
+
+    private void setSelectedItemInternalWithoutListener(
+            final ItemsLayoutContainer layoutContainer,
+            final View view, final int index,
+            final boolean animate,
+            final boolean fromUser) {
+
+        final BottomNavigationItem item;
+        if (index > -1 && index < menu.getItemsCount()) {
+            item = menu.getItemAt(index);
+        } else {
+            item = null;
+        }
+
+        if (layoutContainer.getSelectedIndex() != index) {
+            layoutContainer.setSelectedIndex(index, animate);
+
+            if ((null != item && item.hasColor()) && !menu.isTablet()) {
+                if (animate) {
+                    MiscUtils.animate(
+                            this,
+                            view,
+                            backgroundOverlay,
+                            backgroundDrawable,
+                            item.getColor(),
+                            backgroundColorAnimation
+                    );
+                } else {
+                    MiscUtils.switchColor(
+                            this,
+                            view,
+                            backgroundOverlay,
+                            backgroundDrawable,
+                            item.getColor()
+                    );
+                }
+            }
+
         }
     }
 
