@@ -205,10 +205,10 @@ open class BottomBehavior constructor(context: Context, attrs: AttributeSet) :
         }
 
         if (offset > scaledTouchSlop) {
-            handleDirection(coordinatorLayout, child, VerticalScrollingBehavior.ScrollDirection.SCROLL_DIRECTION_UP)
+            handleDirection(coordinatorLayout, child, SCROLL_DIRECTION_UP)
             offset = 0
         } else if (offset < -scaledTouchSlop) {
-            handleDirection(coordinatorLayout, child, VerticalScrollingBehavior.ScrollDirection.SCROLL_DIRECTION_DOWN)
+            handleDirection(coordinatorLayout, child, SCROLL_DIRECTION_DOWN)
             offset = 0
         }
     }
@@ -234,9 +234,9 @@ open class BottomBehavior constructor(context: Context, attrs: AttributeSet) :
         if (!enabled || !isScrollable || !scrollEnabled) {
             return
         }
-        if (scrollDirection == VerticalScrollingBehavior.ScrollDirection.SCROLL_DIRECTION_DOWN && hidden) {
+        if (scrollDirection == SCROLL_DIRECTION_DOWN && hidden) {
             setExpanded(coordinatorLayout, child, true, true)
-        } else if (scrollDirection == VerticalScrollingBehavior.ScrollDirection.SCROLL_DIRECTION_UP && !hidden) {
+        } else if (scrollDirection == SCROLL_DIRECTION_UP && !hidden) {
             setExpanded(coordinatorLayout, child, false, true)
         }
     }

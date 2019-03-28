@@ -12,6 +12,11 @@ import java.lang.annotation.RetentionPolicy
 /**
  * Created by alessandro on 4/2/16.
  */
+
+const val SCROLL_DIRECTION_UP = 1
+const val SCROLL_DIRECTION_DOWN = -1
+const val SCROLL_NONE = 0
+
 abstract class VerticalScrollingBehavior<V : View>(context: Context, attrs: AttributeSet) :
         CoordinatorLayout.Behavior<V>(context, attrs) {
 
@@ -23,7 +28,7 @@ abstract class VerticalScrollingBehavior<V : View>(context: Context, attrs: Attr
    */
     @ScrollDirection
     @get:ScrollDirection
-    var overScrollDirection = ScrollDirection.SCROLL_NONE
+    var overScrollDirection = SCROLL_NONE
         private set
 
     /**
@@ -31,19 +36,13 @@ abstract class VerticalScrollingBehavior<V : View>(context: Context, attrs: Attr
      */
     @ScrollDirection
     @get:ScrollDirection
-    var scrollDirection = ScrollDirection.SCROLL_NONE
+    var scrollDirection = SCROLL_NONE
         private set
 
     @Suppress("DEPRECATED_JAVA_ANNOTATION")
     @Retention(RetentionPolicy.SOURCE)
-    @IntDef(ScrollDirection.SCROLL_DIRECTION_UP, ScrollDirection.SCROLL_DIRECTION_DOWN)
-    annotation class ScrollDirection {
-        companion object {
-            const val SCROLL_DIRECTION_UP = 1
-            const val SCROLL_DIRECTION_DOWN = -1
-            const val SCROLL_NONE = 0
-        }
-    }
+    @IntDef(SCROLL_DIRECTION_UP, SCROLL_DIRECTION_DOWN)
+    annotation class ScrollDirection
 
     /**
      * @param coordinatorLayout
@@ -75,10 +74,10 @@ abstract class VerticalScrollingBehavior<V : View>(context: Context, attrs: Attr
         super.onNestedScroll(coordinatorLayout, child, target, dxConsumed, dyConsumed, dxUnconsumed, dyUnconsumed, type)
         if (dyUnconsumed > 0 && mTotalDyUnconsumed < 0) {
             mTotalDyUnconsumed = 0
-            overScrollDirection = ScrollDirection.SCROLL_DIRECTION_UP
+            overScrollDirection = SCROLL_DIRECTION_UP
         } else if (dyUnconsumed < 0 && mTotalDyUnconsumed > 0) {
             mTotalDyUnconsumed = 0
-            overScrollDirection = ScrollDirection.SCROLL_DIRECTION_DOWN
+            overScrollDirection = SCROLL_DIRECTION_DOWN
         }
         mTotalDyUnconsumed += dyUnconsumed
         onNestedVerticalOverScroll(coordinatorLayout, child, overScrollDirection, dyConsumed, mTotalDyUnconsumed)
@@ -89,10 +88,10 @@ abstract class VerticalScrollingBehavior<V : View>(context: Context, attrs: Attr
         super.onNestedPreScroll(coordinatorLayout, child, target, dx, dy, consumed, type)
         if (dy > 0 && mTotalDy < 0) {
             mTotalDy = 0
-            scrollDirection = ScrollDirection.SCROLL_DIRECTION_UP
+            scrollDirection = SCROLL_DIRECTION_UP
         } else if (dy < 0 && mTotalDy > 0) {
             mTotalDy = 0
-            scrollDirection = ScrollDirection.SCROLL_DIRECTION_DOWN
+            scrollDirection = SCROLL_DIRECTION_DOWN
         }
         mTotalDy += dy
         onDirectionNestedPreScroll(coordinatorLayout, child, target, dx, dy, consumed, scrollDirection)
@@ -102,7 +101,7 @@ abstract class VerticalScrollingBehavior<V : View>(context: Context, attrs: Attr
             coordinatorLayout: CoordinatorLayout, child: V, target: View, velocityX: Float, velocityY: Float,
             consumed: Boolean): Boolean {
         super.onNestedFling(coordinatorLayout, child, target, velocityX, velocityY, consumed)
-        scrollDirection = if (velocityY > 0) ScrollDirection.SCROLL_DIRECTION_UP else ScrollDirection.SCROLL_DIRECTION_DOWN
+        scrollDirection = if (velocityY > 0) SCROLL_DIRECTION_UP else SCROLL_DIRECTION_DOWN
         return onNestedDirectionFling(coordinatorLayout, child, target, velocityX, velocityY, scrollDirection)
     }
 

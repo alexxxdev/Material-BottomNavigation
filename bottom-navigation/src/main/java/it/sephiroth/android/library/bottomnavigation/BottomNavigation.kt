@@ -856,7 +856,7 @@ class BottomNavigation : FrameLayout, OnItemClickListener {
 
         private val S_CONSTRUCTORS = ThreadLocal<MutableMap<String, Constructor<BadgeProvider>>>()
 
-        internal fun parseBadgeProvider(navigation: BottomNavigation, context: Context, name: String?): BadgeProvider {
+        internal fun parseBadgeProvider(navigation: BottomNavigation, context: Context, name: String): BadgeProvider {
             log(VERBOSE, "parseBadgeProvider: $name")
 
             if (name.isNullOrEmpty()) {
@@ -884,7 +884,7 @@ class BottomNavigation : FrameLayout, OnItemClickListener {
                     val clazz = Class.forName(fullName, true, context.classLoader) as Class<BadgeProvider>
                     c = clazz.getConstructor(*CONSTRUCTOR_PARAMS)
                     c!!.isAccessible = true
-                    constructors[fullName] = c
+                    constructors.set(fullName, c)
                 }
                 return c.newInstance(navigation)
             } catch (e: Exception) {
