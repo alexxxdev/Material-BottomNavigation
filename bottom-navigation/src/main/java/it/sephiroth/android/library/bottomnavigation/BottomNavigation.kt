@@ -890,6 +890,49 @@ class BottomNavigation : FrameLayout, OnItemClickListener {
             } catch (e: Exception) {
                 throw RuntimeException("Could not inflate Behavior subclass $fullName", e)
             }
+        }
+    }
+
+    public fun setSelectedItem(position: Int, animate: Boolean){
+        if (null != itemsContainer) {
+            setSelectedItemInternalWithoutListener(
+                itemsContainer!!, (itemsContainer as ViewGroup).getChildAt(position), position, animate, false)
+        } else {
+            defaultSelectedIndex = position
+        }
+    }
+
+    public fun setSelectedItemInternalWithoutListener(layoutContainer: ItemsLayoutContainer, view:View, index:Int, animate:Boolean, fromUser:Boolean){
+        val item: BottomNavigationItem?
+        if (index > -1 && index < menu?.itemsCount?:0) {
+            item = menu?.getItemAt(index)
+        } else {
+            item = null
+        }
+
+        if (layoutContainer.getSelectedIndex() != index) {
+            layoutContainer.setSelectedIndex(index, animate)
+
+            if ((null != item && item.hasColor()) && menu?.isTablet==false) {
+                if (animate) {
+                    MiscUtils.animate(
+                        this,
+                        view,
+                        backgroundOverlay!!,
+                        backgroundDrawable!!,
+                        item.color,
+                        backgroundColorAnimation
+                    )
+                } else {
+                    MiscUtils.switchColor(
+                        this,
+                        view,
+                        backgroundOverlay!!,
+                        backgroundDrawable!!,
+                        item.color
+                    )
+                }
+            }
 
         }
     }
