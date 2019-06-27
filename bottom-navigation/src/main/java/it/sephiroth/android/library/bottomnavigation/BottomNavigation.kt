@@ -894,9 +894,8 @@ class BottomNavigation : FrameLayout, OnItemClickListener {
     }
 
     public fun setSelectedItem(position: Int, animate: Boolean){
-        if (null != itemsContainer) {
-            setSelectedItemInternalWithoutListener(
-                itemsContainer!!, (itemsContainer as ViewGroup).getChildAt(position), position, animate, false)
+        if (itemsContainer != null && (itemsContainer as ViewGroup).childCount > 0 && (itemsContainer as ViewGroup).childCount > position) {
+            setSelectedItemInternalWithoutListener(itemsContainer!!, (itemsContainer as ViewGroup).getChildAt(position), position, animate, false)
         } else {
             defaultSelectedIndex = position
         }
