@@ -732,8 +732,10 @@ class BottomNavigation : FrameLayout, OnItemClickListener {
 
     override fun onItemClick(parent: ItemsLayoutContainer, view: View, index: Int, animate: Boolean) {
         log(VERBOSE, "onItemClick: $index")
-        setSelectedItemInternal(parent, view, index, animate, true)
-        mLayoutChangedListener.forceLayout(view)
+        if (menuItemSelectionListener?.onMenuItemPreSelect(index)== true) {
+            setSelectedItemInternal(parent, view, index, animate, true)
+            mLayoutChangedListener.forceLayout(view)
+        }
     }
 
     private fun setSelectedItemInternal(
@@ -793,6 +795,8 @@ class BottomNavigation : FrameLayout, OnItemClickListener {
     }
 
     interface OnMenuItemSelectionListener {
+        fun onMenuItemPreSelect(position: Int): Boolean
+
         fun onMenuItemSelect(@IdRes itemId: Int, position: Int, fromUser: Boolean)
 
         fun onMenuItemReselect(@IdRes itemId: Int, position: Int, fromUser: Boolean)
