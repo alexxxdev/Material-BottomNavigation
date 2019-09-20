@@ -239,6 +239,11 @@ public class MainActivity extends BaseActivity implements BottomNavigation.OnMen
     }
 
     @Override
+    public Boolean onMenuItemPreSelect(int position) {
+        return position!=1;
+    }
+
+    @Override
     public void onMenuItemSelect(final int itemId, final int position, final boolean fromUser) {
         log(TAG, INFO, "onMenuItemSelect(" + itemId + ", " + position + ", " + fromUser + ")");
         if (fromUser) {

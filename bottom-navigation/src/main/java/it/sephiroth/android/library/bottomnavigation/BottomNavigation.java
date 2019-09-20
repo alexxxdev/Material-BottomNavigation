@@ -34,6 +34,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.IdRes;
 import android.support.annotation.MenuRes;
+import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
@@ -747,8 +748,10 @@ public class BottomNavigation extends FrameLayout implements OnItemClickListener
     @Override
     public void onItemClick(final ItemsLayoutContainer parent, final View view, final int index, boolean animate) {
         log(TAG, INFO, "onItemClick: %d", index);
-        setSelectedItemInternal(parent, view, index, animate, true);
-        mLayoutChangedListener.forceLayout(view);
+        if (listener.onMenuItemPreSelect(index)) {
+            setSelectedItemInternal(parent, view, index, animate, true);
+            mLayoutChangedListener.forceLayout(view);
+        }
     }
 
     private void setSelectedItemInternal(
@@ -899,6 +902,9 @@ public class BottomNavigation extends FrameLayout implements OnItemClickListener
     }
 
     public interface OnMenuItemSelectionListener {
+        @NonNull
+        Boolean onMenuItemPreSelect(final int position);
+
         void onMenuItemSelect(@IdRes final int itemId, final int position, final boolean fromUser);
 
         void onMenuItemReselect(@IdRes final int itemId, final int position, final boolean fromUser);
