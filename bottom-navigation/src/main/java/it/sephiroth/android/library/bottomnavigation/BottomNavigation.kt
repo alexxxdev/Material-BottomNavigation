@@ -376,7 +376,11 @@ class BottomNavigation : FrameLayout, OnItemClickListener {
      * @param menuResId the menu resource id
      */
     fun inflateMenu(@MenuRes menuResId: Int) {
-        defaultSelectedIndex = 0
+        inflateMenu(menuResId, 0);
+    }
+    
+    fun inflateMenu(@MenuRes menuResId: Int, selectedIndex: Int) {
+        defaultSelectedIndex = selectedIndex
         pendingMenu = when {
             isAttachedToWindow -> {
                 setItems(MenuParser.inflateMenu(context, menuResId))
