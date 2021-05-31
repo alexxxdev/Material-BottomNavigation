@@ -112,16 +112,16 @@ internal class BottomNavigationShiftingItemView(parent: BottomNavigation, expand
         val dstAlpha = if (enabled) alphaActive else alphaDisabled
         if (expanded) {
             color = evaluator.evaluate(fraction, srcColor, dstColor) as Int
-            icon!!.alpha = ((srcAlpha + fraction * (dstAlpha - srcAlpha)) * BottomNavigationItemViewAbstract.ALPHA_MAX).toInt()
+            icon?.alpha = ((srcAlpha + fraction * (dstAlpha - srcAlpha)) * BottomNavigationItemViewAbstract.ALPHA_MAX).toInt()
             textPaint.alpha = (fraction * dstAlpha * BottomNavigationItemViewAbstract.ALPHA_MAX).toInt()
         } else {
             color = evaluator.evaluate(fraction, srcColor, dstColor) as Int
             val alpha = 1.0f - fraction
-            icon!!.alpha = ((srcAlpha + alpha * (dstAlpha - srcAlpha)) * BottomNavigationItemViewAbstract.ALPHA_MAX).toInt()
+            icon?.alpha = ((srcAlpha + alpha * (dstAlpha - srcAlpha)) * BottomNavigationItemViewAbstract.ALPHA_MAX).toInt()
             textPaint.alpha = (alpha * dstAlpha * BottomNavigationItemViewAbstract.ALPHA_MAX).toInt()
         }
 
-        icon!!.setColorFilter(color, PorterDuff.Mode.SRC_ATOP)
+        icon?.setColorFilter(color, PorterDuff.Mode.SRC_ATOP)
     }
 
     private fun measureText() {
